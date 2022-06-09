@@ -1,24 +1,35 @@
 import { Flex, Text } from "@chakra-ui/react";
-import React from "react";
+
 interface Props {
-  paginateNumber: number[];
-  handlePaginateChange: (params: number) => void;
+  postsPerPage: number;
+  totalPosts: number;
+  currentPage: number;
+  paginate: (pageNumber: number) => void;
 }
 const Paginate: React.FC<Props> = (props) => {
-  let { paginateNumber, handlePaginateChange } = props;
+  const { postsPerPage, totalPosts, paginate, currentPage } = props;
+  const pageNumbers = [];
 
+  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+    pageNumbers.push(i);
+  }
   return (
-    <Flex gap={2} alignItems="center">
-      {paginateNumber.map((item) => (
+    <Flex gap={10} justifyContent="center">
+      {pageNumbers.map((number) => (
         <Text
-          key={item}
-          _hover={{ cursor: "pointer" }}
-          onClick={(e) => {
-            e.preventDefault();
-            handlePaginateChange(item);
+          key={number}
+          fontSize="xl"
+          fontWeight={"bold"}
+          _hover={{
+            cursor: "pointer",
+            color: "darkGreen",
+          }}
+          color={currentPage === number ? "blue" : "darkBlue"}
+          onClick={() => {
+            paginate(number);
           }}
         >
-          {item}
+          {number}
         </Text>
       ))}
     </Flex>

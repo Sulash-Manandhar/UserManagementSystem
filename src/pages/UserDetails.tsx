@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Image,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-} from "@chakra-ui/react";
-import React from "react";
+import { Flex, Image } from "@chakra-ui/react";
 import { useUserIdContext } from "../context/UserIdContext";
 
 const UserDetails = () => {
@@ -30,11 +21,6 @@ const UserDetails = () => {
           src="https://picsum.photos/800/400"
           borderRadius={10}
         />
-        <FormControl>
-          <FormLabel htmlFor="email">Email address</FormLabel>
-          <Input id="email" type="email" />
-          <FormHelperText>We'll never share your email.</FormHelperText>
-        </FormControl>
       </Flex>
     </>
   );

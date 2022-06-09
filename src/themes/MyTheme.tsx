@@ -9,6 +9,13 @@ const MyTheme = extendTheme({
     darkBlue: "#617D9D",
     background: "#F1F5F8",
   },
+  components: {
+    Input: {
+      _focus: {
+        boxShadow: "outline",
+      },
+    },
+  },
 });
 
 export default MyTheme;

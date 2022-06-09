@@ -1,51 +1,54 @@
-import { Avatar, Badge, Flex, Heading } from "@chakra-ui/react";
-import { UserSchema } from "../Schema/MySchema";
-import { useUserLimit } from "../hooks/useUserLimit";
+import { Avatar, Badge, Flex, Text } from "@chakra-ui/react";
 import { useUserIdContext } from "../context/UserIdContext";
+import { UserSchema } from "../Schema/MySchema";
+
 interface Props {
-  currentPaginate: number;
+  userData: UserSchema[];
   handlePageNavigation: (params: string) => void;
 }
-const ViewUser: React.FC<Props> = (props) => {
-  const { currentPaginate, handlePageNavigation } = props;
-
-  const userData = useUserLimit(
-    "http://localhost:4001/users",
-    currentPaginate,
-    3
-  );
+const ViewUser: React.FC<Props> = ({ userData, handlePageNavigation }) => {
   const { handleUserId } = useUserIdContext();
 
   const handleUserDetailNavigation = (id: number) => {
     handleUserId(id);
     handlePageNavigation("User_Details");
   };
+
   return (
-    <Flex direction={"row"} alignItems={"center"} gap="20px">
-      {userData.map((user: UserSchema) => (
+    <Flex gap={"40px"}>
+      {userData.map((user) => (
         <Flex
-          borderRadius="10px"
-          w="30vh"
+          display={"column"}
+          boxShadow="xl"
+          p="10"
+          rounded="md"
           bg="white"
-          p="40px"
-          direction="column"
-          gap="15px"
-          alignItems={"center"}
+          gap="10px"
+          alignItems="center"
+          textAlign={"center"}
           key={user.id}
         >
           <Avatar
             size="2xl"
-            name="Dan Abrahmov"
-            src="https://picsum.photos/800/800"
+            name={user.username}
+            src="https://picsum.photos/200"
           />
-          <Heading size={"xm"} color="darkBlue">
+          <Text
+            size="sm"
+            color="darkBlue"
+            mt="10px"
+            textTransform={"capitalize"}
+          >
             {user.username}
-          </Heading>
+          </Text>
           <Badge
-            color={"white"}
+            variant="solid"
             bg="blue"
+            mt="4"
             fontSize={"lg"}
-            _hover={{ cursor: "pointer", bg: "darkBlue" }}
+            rounded="md"
+            p={2}
+            _hover={{ bg: "darkBlue", cursor: "pointer" }}
             onClick={() => handleUserDetailNavigation(user.id)}
           >
             View Profile

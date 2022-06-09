@@ -10,12 +10,13 @@ const Header: React.FC<Props> = (props) => {
 
   return (
     <Flex justify="flex-end" w="100%">
-      <Flex w="70%">
+      <Flex w="65%">
         <Heading color={"black"}>User Management System</Heading>
         <Spacer />
         <Button
           bg="green"
           color={"white"}
+          _hover={{ bg: "darkGreen" }}
           onClick={() => handlePageNavigation("Add_User")}
         >
           <AiOutlinePlus />
