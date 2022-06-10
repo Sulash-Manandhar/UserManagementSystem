@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React, { useState } from "react";
 import AddUser from "./pages/AddUser";
 import Home from "./pages/Home";
@@ -14,21 +14,24 @@ function App() {
 
   return (
     <UserIdProvider>
-      <Flex
-        bg={"background"}
-        align="center"
-        h={"100vh"}
-        w="100%"
-        direction={"column"}
-        gap={"40px"}
-        p={"20px"}
-      >
+      <Box bg={"background"} h={"100vh"} w="100%">
         {currentPage === "Home" && (
-          <Home handlePageNavigation={handlePageNavigation} />
+          <Flex
+            direction={"column"}
+            gap={"50px"}
+            w="100%"
+            h="100%"
+            align="center"
+            p="20px"
+          >
+            <Home handlePageNavigation={handlePageNavigation} />
+          </Flex>
         )}
-        {currentPage === "Add_User" && <AddUser />}
+        {currentPage === "Add_User" && (
+          <AddUser handlePageNavigation={handlePageNavigation} />
+        )}
         {currentPage === "User_Details" && <UserDetails />}
-      </Flex>
+      </Box>
     </UserIdProvider>
   );
 }
