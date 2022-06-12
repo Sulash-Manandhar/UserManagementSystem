@@ -10,6 +10,8 @@ const Paginate: React.FC<Props> = (props) => {
   const { postsPerPage, totalPosts, paginate, currentPage } = props;
   const pageNumbers = [];
 
+  let totalPages = Math.ceil(totalPosts / postsPerPage);
+
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumbers.push(i);
   }
@@ -24,7 +26,7 @@ const Paginate: React.FC<Props> = (props) => {
             cursor: "pointer",
             color: "darkGreen",
           }}
-          color={currentPage === number ? "blue" : "darkBlue"}
+          color={currentPage === number ? "green" : "blue"}
           onClick={() => {
             paginate(number);
           }}

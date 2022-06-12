@@ -15,7 +15,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { UserSchema } from "../Schema/MySchema";
 import { AiFillWarning } from "react-icons/ai";
-import { useToast } from "../hooks/useToast";
 
 const AddUserForm = () => {
   const [userInputData, setUserInputData] = useState<UserSchema>({
@@ -80,10 +79,6 @@ const AddUserForm = () => {
     return true;
   };
 
-  const CallMe = (params: void): void => {
-    useToast("success", "User is successfully added!");
-    console.log("first");
-  };
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (validateForm(userInputData)) {
@@ -92,7 +87,6 @@ const AddUserForm = () => {
         .then((res) => {
           if (res.status > 200 && res.status < 210) {
             setErrorMessages([]);
-            CallMe();
             console.log("Success");
           }
         })
