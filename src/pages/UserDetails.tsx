@@ -23,6 +23,8 @@ const UserDetails: React.FC<Props> = (props) => {
   const { handlePageNavigation } = props;
   const { userId } = useUserIdContext();
 
+  //@desc delete user account
+  //@route(delete) /users
   const deleteUserAccount = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     let confirm = window.confirm(

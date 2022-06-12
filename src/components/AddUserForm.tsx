@@ -14,15 +14,23 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { UserSchema } from "../Schema/MySchema";
+import { ShowToast } from "../Utilities/ShowToast";
 import { AiFillWarning } from "react-icons/ai";
+import { useToast } from "@chakra-ui/react";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+interface Props {
+  handlePageNavigation: (params: string) => void;
+}
+const AddUserForm: React.FC<Props> = (props) => {
+  const toast = useToast();
+  const { handlePageNavigation } = props;
 
-const AddUserForm = () => {
   const [userInputData, setUserInputData] = useState<UserSchema>({
     name: "",
     username: "",
     email: "",
     sex: "Male",
-    phone: 0,
+    phone: "",
     address: {
       street: "",
       city: "",
@@ -34,6 +42,7 @@ const AddUserForm = () => {
   }
   const [errorsMessages, setErrorMessages] = useState<errorMessage[]>([]);
 
+  //@desc handle form input change
   const updateUserInputData = (e: any) => {
     e.preventDefault();
     let temp;
@@ -52,13 +61,15 @@ const AddUserForm = () => {
     setUserInputData(temp);
   };
 
+  //@desc form validation
   const validateForm = (userInputData: UserSchema): boolean => {
     let errors = [];
+    let validPhoneNumber = /\b[9]{1}[8]{1}[0-8]{8}\b/g;
     if (
       userInputData.name === "" ||
       userInputData.username === "" ||
       userInputData.email === "" ||
-      userInputData.phone === 0 ||
+      userInputData.phone === "" ||
       userInputData.address.street === "" ||
       userInputData.address.city === ""
     ) {
@@ -71,6 +82,11 @@ const AddUserForm = () => {
       if (!/\b[a-z]{5,}\b/g.test(userInputData.username)) {
         errors.push({ msg: "Username must contain only lowercase" });
       }
+      if (!validPhoneNumber.test(userInputData.phone)) {
+        errors.push({
+          msg: "Phone number must be 10 digits. Pattern (98********)",
+        });
+      }
       if (errors.length > 0) {
         setErrorMessages(errors);
         return false;
@@ -79,6 +95,8 @@ const AddUserForm = () => {
     return true;
   };
 
+  //@desc handle from submission
+  //@route /users
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (validateForm(userInputData)) {
@@ -87,7 +105,26 @@ const AddUserForm = () => {
         .then((res) => {
           if (res.status > 200 && res.status < 210) {
             setErrorMessages([]);
-            console.log("Success");
+            //@desc success toast
+            toast({
+              title: "User Added Successfully",
+              description: "You can view your profile from dashboard",
+              status: "success",
+              duration: 9000,
+              isClosable: true,
+              position: "bottom-right",
+            });
+            handlePageNavigation("Home");
+          } else {
+            //@desc error toast
+            toast({
+              title: "Error Adding user",
+              description: "There was an error adding user",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+              position: "bottom-right",
+            });
           }
         })
         .catch((err) => {

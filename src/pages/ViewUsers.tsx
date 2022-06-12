@@ -9,6 +9,7 @@ interface Props {
 const ViewUser: React.FC<Props> = ({ userData, handlePageNavigation }) => {
   const { handleUserId } = useUserIdContext();
 
+  //@desc handle user navigation to user profile
   const handleUserDetailNavigation = (id: number) => {
     handleUserId(id);
     handlePageNavigation("User_Details");

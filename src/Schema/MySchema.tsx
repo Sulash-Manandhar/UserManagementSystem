@@ -7,7 +7,7 @@ export type UserSchema = {
     street: string;
     city: string;
   };
-  phone: number;
+  phone: string;
 };
 
 export type UserWithId = UserSchema & { id: number };

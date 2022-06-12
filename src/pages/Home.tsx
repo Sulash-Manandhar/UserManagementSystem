@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Paginate from "../components/Paginate";
 import { UserWithId } from "../Schema/MySchema";
-import ViewUser from "./ViewUser";
+import ViewUser from "./ViewUsers";
 
 interface Props {
   handlePageNavigation: (params: string) => void;
@@ -25,10 +25,13 @@ const Home: React.FC<Props> = (props) => {
         street: "",
         city: "",
       },
-      phone: 0,
+      phone: "",
     },
   ]);
 
+  //@desc fetch user data with query
+  //@params currentPage, postsPerPage
+  //@route(get) /users
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(

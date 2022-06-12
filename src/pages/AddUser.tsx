@@ -37,7 +37,7 @@ const AddUser: React.FC<Props> = (props) => {
           </Text>
         </Box>
 
-        <AddUserForm />
+        <AddUserForm handlePageNavigation={handlePageNavigation} />
       </Flex>
       <Box w={"40%"}>
         <Image
