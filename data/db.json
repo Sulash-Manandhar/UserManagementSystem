@@ -7,32 +7,20 @@
       "email": "Sincere@april.biz",
       "sex": "Male",
       "address": {
-        "street": "Kulas Light",
+        "street": "Kulas Dark",
         "city": "Gwenborough"
       },
       "phone": "9841476797"
     },
     {
       "id": 2,
-      "name": "Ervin Howell",
+      "name": "Ervin Manandhar",
       "username": "Antonette",
       "email": "Shanna@melissa.tv",
       "sex": "Female",
       "address": {
         "street": "Victor Plains",
         "city": "Wisokyburgh"
-      },
-      "phone": "9841476797"
-    },
-    {
-      "id": 3,
-      "name": "Clementine Bauch",
-      "username": "Samantha",
-      "email": "Nathan@yesenia.net",
-      "sex": "Male",
-      "address": {
-        "street": "Douglas Extension",
-        "city": "McKenziehaven"
       },
       "phone": "9841476797"
     },
@@ -56,7 +44,6 @@
       "address": {
         "sex": "Female",
         "street": "Skiles Walks",
-
         "city": "Roscoeview"
       },
       "phone": "9841476797"

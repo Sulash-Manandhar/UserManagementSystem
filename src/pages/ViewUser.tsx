@@ -1,9 +1,9 @@
 import { Avatar, Badge, Flex, Text } from "@chakra-ui/react";
 import { useUserIdContext } from "../context/UserIdContext";
-import { UserSchema } from "../Schema/MySchema";
+import { UserWithId } from "../Schema/MySchema";
 
 interface Props {
-  userData: UserSchema[];
+  userData: UserWithId[];
   handlePageNavigation: (params: string) => void;
 }
 const ViewUser: React.FC<Props> = ({ userData, handlePageNavigation }) => {

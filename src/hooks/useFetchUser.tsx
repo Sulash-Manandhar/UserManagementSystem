@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { UserSchema } from "../Schema/MySchema";
+import { UserWithId } from "../Schema/MySchema";
 
 export const useFetchUser = () => {
-  const [userData, setUserDate] = useState<UserSchema[]>([]);
+  const [userData, setUserDate] = useState<UserWithId[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

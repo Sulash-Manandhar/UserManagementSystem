@@ -6,119 +6,77 @@ import {
   Flex,
   Select,
   Button,
-  ListItem,
-  List,
   Box,
-  Alert,
+  WrapItem,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useState } from "react";
-import { UserSchema } from "../Schema/MySchema";
-import { AiFillWarning } from "react-icons/ai";
-import { useToast } from "../hooks/useToast";
+import { useEffect, useState } from "react";
+import { useUserIdContext } from "../context/UserIdContext";
+import { UserWithId } from "../Schema/MySchema";
 
-const AddUserForm = () => {
-  const [userInputData, setUserInputData] = useState<UserSchema>({
-    name: "",
-    username: "",
-    email: "",
-    sex: "Male",
-    phone: 0,
-    address: {
-      street: "",
-      city: "",
-    },
-  });
+interface Address {
+  city: string;
+  street: string;
+}
 
-  interface errorMessage {
-    msg: string;
-  }
-  const [errorsMessages, setErrorMessages] = useState<errorMessage[]>([]);
+const EditUserForm = () => {
+  const { userId } = useUserIdContext();
+  const [viewForm, setViewForm] = useState(true);
+  const [userData, setUserData] = useState<UserWithId>();
+  const [temp, setTemp] = useState<UserWithId>();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4001/users/${userId}`)
+      .then((res: any) => {
+        setUserData(res.data);
+        setTemp(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [userId]);
+
+  const updateData = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:4001/users/${userId}`, userData)
+      .then((res) => {
+        console.log(res);
+        window.alert("Success");
+        setViewForm(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const updateUserInputData = (e: any) => {
     e.preventDefault();
-    let temp;
     if (e.target.name === "city" || e.target.name === "street") {
-      temp = {
-        ...userInputData,
+      setUserData({
+        ...(userData as UserWithId),
         address: {
-          ...userInputData.address,
+          ...(userData?.address as Address),
           [e.target.name]: e.target.value,
         },
-      };
+      });
     } else {
-      temp = { ...userInputData, [e.target.name]: e.target.value };
-    }
-    // console.log(temp);
-    setUserInputData(temp);
-  };
-
-  const validateForm = (userInputData: UserSchema): boolean => {
-    let errors = [];
-    if (
-      userInputData.name === "" ||
-      userInputData.username === "" ||
-      userInputData.email === "" ||
-      userInputData.phone === 0 ||
-      userInputData.address.street === "" ||
-      userInputData.address.city === ""
-    ) {
-      errors.push({ msg: "Details are missing " });
-    }
-    if (errors.length > 0) {
-      setErrorMessages(errors);
-      return false;
-    } else {
-      if (!/\b[a-z]{5,}\b/g.test(userInputData.username)) {
-        errors.push({ msg: "Username must contain only lowercase" });
-      }
-      if (errors.length > 0) {
-        setErrorMessages(errors);
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const CallMe = (params: void): void => {
-    useToast("success", "User is successfully added!");
-    console.log("first");
-  };
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (validateForm(userInputData)) {
-      axios
-        .post("http://localhost:4001/users", userInputData)
-        .then((res) => {
-          if (res.status > 200 && res.status < 210) {
-            setErrorMessages([]);
-            CallMe();
-            console.log("Success");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      setUserData({
+        ...(userData as UserWithId),
+        [e.target.name]: e.target.value,
+      });
     }
   };
 
   return (
-    <Flex w={"100%"} direction="column" gap={"10px"}>
-      <Box mb="10">
-        {errorsMessages.length > 0 &&
-          errorsMessages.map((item, index) => (
-            <List spacing={1} key={index}>
-              <ListItem>
-                <Alert background="tomato" borderRadius={6} color={"white"}>
-                  <Flex alignItems={"center"} gap="3">
-                    <AiFillWarning />
-                    {item.msg}
-                  </Flex>
-                </Alert>
-              </ListItem>
-            </List>
-          ))}
-      </Box>
+    <Flex
+      w={"100%"}
+      direction="column"
+      gap={"10px"}
+      pb="2"
+      borderBottom="2px solid teal"
+    >
       <Flex gap={5}>
         {/* Full Name  */}
         <FormControl _focus={{ boxShadow: "outline" }}>
@@ -129,6 +87,8 @@ const AddUserForm = () => {
             name="name"
             placeholder={"Full Name"}
             _focus={{ boxShadow: "outline" }}
+            value={userData?.name}
+            readOnly={viewForm}
             onChange={updateUserInputData}
           />
         </FormControl>
@@ -142,6 +102,8 @@ const AddUserForm = () => {
             pattern="[a-z]{5,}"
             placeholder={"username"}
             _focus={{ boxShadow: "outline" }}
+            value={userData?.username}
+            readOnly={viewForm}
             onChange={updateUserInputData}
           />
         </FormControl>
@@ -155,6 +117,8 @@ const AddUserForm = () => {
           name="email"
           placeholder={"career@diagonal.software"}
           _focus={{ boxShadow: "outline" }}
+          value={userData?.email}
+          readOnly={viewForm}
           onChange={updateUserInputData}
         />
         <FormHelperText>We'll never share your email.</FormHelperText>
@@ -167,6 +131,8 @@ const AddUserForm = () => {
             id="Sex"
             placeholder="Select sex"
             name="sex"
+            value={userData?.sex}
+            isReadOnly={viewForm}
             onChange={updateUserInputData}
           >
             <option value={"Male"}>Male</option>
@@ -184,6 +150,8 @@ const AddUserForm = () => {
             pattern="[9]{1}[9]{1}[0-9]{8}"
             placeholder={"98******"}
             _focus={{ boxShadow: "outline" }}
+            value={userData?.phone}
+            readOnly={viewForm}
             onChange={updateUserInputData}
           />
         </FormControl>
@@ -199,6 +167,8 @@ const AddUserForm = () => {
             name="city"
             placeholder={"City Name"}
             _focus={{ boxShadow: "outline" }}
+            value={userData?.address?.city}
+            readOnly={viewForm}
             onChange={updateUserInputData}
           />
         </FormControl>
@@ -211,21 +181,46 @@ const AddUserForm = () => {
             name="street"
             placeholder={"Your Street"}
             _focus={{ boxShadow: "outline" }}
+            value={userData?.address?.street}
+            readOnly={viewForm}
             onChange={updateUserInputData}
           />
         </FormControl>
       </Flex>
-      <Button
-        mt={4}
-        colorScheme="teal"
-        type="submit"
-        w="100%"
-        onClick={handleSubmit}
-      >
-        Submit
-      </Button>
+      <Box textAlign={"right"}>
+        {viewForm ? (
+          <Button
+            colorScheme="yellow"
+            color={"white"}
+            onClick={() => setViewForm(false)}
+          >
+            Edit
+          </Button>
+        ) : (
+          <>
+            <Button
+              _hover={{ bg: "darkBlue" }}
+              bg="blue"
+              color={"white"}
+              mr="5"
+              onClick={updateData}
+            >
+              Save
+            </Button>
+            <Button
+              colorScheme="gray"
+              onClick={() => {
+                setUserData({ ...(temp as UserWithId) });
+                setViewForm(true);
+              }}
+            >
+              Cancel
+            </Button>
+          </>
+        )}
+      </Box>
     </Flex>
   );
 };
 
-export default AddUserForm;
+export default EditUserForm;

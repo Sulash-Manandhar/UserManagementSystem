@@ -6,7 +6,7 @@ const MyTheme = extendTheme({
   colors: {
     black: "#102A42",
     blue: "#49A6E9",
-    darkBlue: "#617D9D",
+    darkBlue: "#4195d1",
     background: "#F1F5F8",
   },
   components: {

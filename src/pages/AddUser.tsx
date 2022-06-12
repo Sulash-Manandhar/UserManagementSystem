@@ -25,7 +25,7 @@ const AddUser: React.FC<Props> = (props) => {
             onClick={() => handlePageNavigation("Home")}
           >
             <AiOutlineArrowLeft />
-            <Text ml="2"> Go Back</Text>
+            <Text ml="1"> Go Back</Text>
           </Button>
         </Box>
         <Box>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Paginate from "../components/Paginate";
-import { UserSchema } from "../Schema/MySchema";
+import { UserWithId } from "../Schema/MySchema";
 import ViewUser from "./ViewUser";
 import { useFetchUser } from "../hooks/useFetchUser";
 
@@ -13,7 +13,7 @@ const Home: React.FC<Props> = (props) => {
   const { handlePageNavigation } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
-  const userData: UserSchema[] = useFetchUser();
+  const userData: UserWithId[] = useFetchUser();
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;

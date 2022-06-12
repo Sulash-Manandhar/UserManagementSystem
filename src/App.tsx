@@ -30,7 +30,9 @@ function App() {
         {currentPage === "Add_User" && (
           <AddUser handlePageNavigation={handlePageNavigation} />
         )}
-        {currentPage === "User_Details" && <UserDetails />}
+        {currentPage === "User_Details" && (
+          <UserDetails handlePageNavigation={handlePageNavigation} />
+        )}
       </Box>
     </UserIdProvider>
   );

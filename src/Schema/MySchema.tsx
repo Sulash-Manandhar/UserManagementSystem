@@ -1,12 +1,13 @@
 export type UserSchema = {
-  id: number;
-  name?: string;
-  username?: string;
-  email?: string;
-  sex?: string;
+  name: string;
+  username: string;
+  email: string;
+  sex: string;
   address: {
     street: string;
     city: string;
   };
   phone: number;
 };
+
+export type UserWithId = UserSchema & { id: number };
