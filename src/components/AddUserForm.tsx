@@ -10,14 +10,12 @@ import {
   List,
   Box,
   Alert,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
 import { UserSchema } from "../Schema/MySchema";
-import { ShowToast } from "../Utilities/ShowToast";
 import { AiFillWarning } from "react-icons/ai";
-import { useToast } from "@chakra-ui/react";
-import { AiOutlineArrowLeft } from "react-icons/ai";
 interface Props {
   handlePageNavigation: (params: string) => void;
 }
@@ -82,11 +80,11 @@ const AddUserForm: React.FC<Props> = (props) => {
       if (!/\b[a-z]{5,}\b/g.test(userInputData.username)) {
         errors.push({ msg: "Username must contain only lowercase" });
       }
-      if (!validPhoneNumber.test(userInputData.phone)) {
-        errors.push({
-          msg: "Phone number must be 10 digits. Pattern (98********)",
-        });
-      }
+      // if (!validPhoneNumber.test(userInputData.phone)) {
+      //   errors.push({
+      //     msg: "Phone number must be 10 digits. Pattern (98********)",
+      //   });
+      // }
       if (errors.length > 0) {
         setErrorMessages(errors);
         return false;
@@ -105,6 +103,17 @@ const AddUserForm: React.FC<Props> = (props) => {
         .then((res) => {
           if (res.status > 200 && res.status < 210) {
             setErrorMessages([]);
+            setUserInputData({
+              name: "",
+              username: "",
+              email: "",
+              sex: "Male",
+              phone: "",
+              address: {
+                street: "",
+                city: "",
+              },
+            });
             //@desc success toast
             toast({
               title: "User Added Successfully",
@@ -114,7 +123,6 @@ const AddUserForm: React.FC<Props> = (props) => {
               isClosable: true,
               position: "bottom-right",
             });
-            handlePageNavigation("Home");
           } else {
             //@desc error toast
             toast({
@@ -126,6 +134,7 @@ const AddUserForm: React.FC<Props> = (props) => {
               position: "bottom-right",
             });
           }
+          handlePageNavigation("Home");
         })
         .catch((err) => {
           console.log(err);
